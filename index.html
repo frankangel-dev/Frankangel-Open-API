@@ -1,28 +1,80 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Frank's Open API</title>
+    <title>Frank's Dog Explorer</title>
     <meta charset="UTF-8">
-    <meta name="description" content="Frank's open api project on dogs">
+    <meta name="description" content="Frank's Dog Explorer">
     <meta name="author" content="Frank Angel">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="css/index.css">
   </head>
 
   <body>
-    <h1>🐶 Dog Explorer</h1>
+    <header>
+      <div class="site-name-container">
+        <h1>🐶 Dog Explorer</h1>
+      </div>
 
-    <div class="btn-container">
-      <button id="delete-btn" class="btn-delete">Delete API Key</button>
+      <div class="theme-delete-container">
+        <button type="button" id="theme-btn" class="btn-theme">🌙</button>
+        <button type="button" id="delete-btn" class="btn-delete">Delete API Key</button>
+      </div>
+    </header>
+
+    <div class="layout-container">
+      <aside class="sidebar">
+        <div class="search-box">
+          <div class="search-bar-container">
+            <label for="search-name">Breed Name</label>
+            <input type="text" id="search-name" name="breedName" placeholder="e.g. Pomeranian">
+          </div>
+
+          <button type="button" id="fetch-breeds-btn" class="btn-search">Search</button>
+        </div>
+
+        <div id="empty-state">No searches</div>
+
+        <ul id="breed-list">
+        </ul>
+      </aside>
+
+      <main class="main-content">
+        <div class="tab-container">
+          <div class="profile-tab">Profile & Stats</div>
+        </div>
+
+        <h2 id="breed-name">Select a Breed</h2>
+
+        <div class="image-box">
+          <div id="text-placeholder" class="placeholder-text">Select a breed to view details</div>
+        </div>
+
+        <div class="stats-container">
+          <div class="stat-item">
+            <h2>Description</h2>
+            <p id="stat-description">-</p>
+          </div>
+
+          <div class="stat-item">
+            <h2>Life Span</h2>
+            <p id="stat-life">-</p>
+          </div>
+
+          <div class="stat-item">
+            <h2>Temperament</h2>
+            <p id="stat-temp">-</p>
+          </div>
+        </div>
+      </main>
     </div>
+    
+    <footer>
+      <p>&copy; 2026 Frank's Dog Explorer. Open API Project CTD.</p>
+    </footer>
 
-    <div id="dog-container">
-      <h2>First 10 Dog Breeds</h2>
-      <ul>
-
-      </ul>
-    </div>
-
-    <script type="module" src="js/index.js"></script>
+    <script src="js/index.js"></script>
   </body>
 </html>
