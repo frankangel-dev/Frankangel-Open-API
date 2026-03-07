@@ -1,78 +1,170 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Frank's Dog Explorer</title>
+    <title>BreedDex</title>
     <meta charset="UTF-8">
-    <meta name="description" content="Frank's Dog Explorer">
+    <meta name="description" content="BreedDex - Search and browse dog breeds">
     <meta name="author" content="Frank Angel">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&amp;family=Merriweather:wght@700&amp;display=swap">
     <link rel="stylesheet" href="css/index.css">
   </head>
 
   <body>
-    <header>
-      <div class="site-name-container">
-        <h1>🐶 Dog Explorer</h1>
+    <!-- STICKY HEADER -->
+    <div class="nav-wrapper">
+      <header id="main-header">
+
+        <div class="logo-area">
+          <h1><span class="paw-icon">🐾</span> <span class="brand-color">Breed</span>Dex</h1>
+        </div>
+
+        <nav id="main-nav" aria-label="Main navigation">
+          <button class="nav-link active" data-page="home">Home</button>
+          <button class="nav-link" data-page="browse">Browse All</button>
+        </nav>
+
+        <div class="header-actions">
+          <button type="button" id="btn-search-open" class="icon-btn" aria-label="Open search">🔍</button>
+          <button type="button" class="icon-btn theme-toggle hide-on-mobile" aria-label="Switch theme">🌙</button>
+          <button type="button" class="text-btn delete-key hide-on-mobile" aria-label="Remove saved API key">🗑️ <span>Delete Key</span></button>
+          <button type="button" id="btn-menu" class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-dropdown">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </button>
+        </div>
+      </header>
+
+      <div id="mobile-dropdown" class="mobile-dropdown" aria-hidden="true">
+        <nav aria-label="Mobile navigation">
+          <button class="nav-link active" data-page="home">Home</button>
+          <button class="nav-link" data-page="browse">Browse All</button>
+        </nav>
+        <div class="dropdown-extras">
+          <button type="button" class="icon-btn theme-toggle" aria-label="Switch theme">🌙</button>
+          <button type="button" class="text-btn delete-key" aria-label="Remove saved API key">🗑️ <span>Delete Key</span></button>
+        </div>
       </div>
+    </div>
 
-      <div class="theme-delete-container">
-        <button type="button" id="theme-btn" class="btn-theme">🌙</button>
-        <button type="button" id="delete-btn" class="btn-delete">Delete API Key</button>
+
+    <!-- SEARCH POPUP -->
+    <search id="search-popup" class="search-popup" aria-label="Search dog breeds" hidden>
+      <div class="search-row">
+        <input type="text" id="search-input" name="breedSearch" placeholder="Search for a breed (e.g. Pomeranian)" autocomplete="off" aria-label="Type a breed name" aria-controls="results-list">
+        <button id="btn-clear" class="clear-btn" aria-label="Clear search" hidden>×</button>
       </div>
-    </header>
+      <p id="no-results" role="status" aria-live="polite" hidden></p>
+      <ul id="results-list" aria-label="Search results"></ul>
+    </search>
 
-    <div class="layout-container">
-      <aside class="sidebar">
-        <div class="search-box">
-          <div class="search-bar-container">
-            <label for="search-name">Breed Name</label>
-            <input type="text" id="search-name" name="breedName" placeholder="e.g. Pomeranian">
-          </div>
 
-          <button type="button" id="fetch-breeds-btn" class="btn-search">Search</button>
+    <!-- HOME PAGE -->
+    <div id="home-page">
+      <main class="page-content">
+
+        <div class="bg-word-wrap" aria-hidden="true">
+          <span id="bg-word" class="bg-word">DOGS</span>
         </div>
 
-        <div id="empty-state">No searches</div>
-
-        <ul id="breed-list">
-        </ul>
-      </aside>
-
-      <main class="main-content">
-        <div class="tab-container">
-          <div class="profile-tab">Profile & Stats</div>
+        <div id="welcome-msg" class="welcome-msg">
+          <p>Click the 🔍 icon above to search for a pup or browse all breeds!</p>
         </div>
 
-        <h2 id="breed-name">Select a Breed</h2>
-
-        <div class="image-box">
-          <div id="text-placeholder" class="placeholder-text">Select a breed to view details</div>
-        </div>
-
-        <div class="stats-container">
-          <div class="stat-item">
-            <h2>Description</h2>
-            <p id="stat-description">-</p>
+        <section id="dog-profile" class="dog-profile" aria-label="Dog breed profile" hidden>
+          <!-- Dog photo -->
+          <div class="photo-box card">
+            <span id="photo-loading" class="loading-text">Loading...</span>
+            <img id="dog-photo" src="" alt="">
           </div>
 
-          <div class="stat-item">
-            <h2>Life Span</h2>
-            <p id="stat-life">-</p>
+          <!-- Right column -->
+          <div class="info-col">
+
+            <h2 id="breed-name" class="breed-heading"></h2>
+
+            <!-- Quick Stats -->
+            <div class="info-card card">
+              <h3>Quick Stats</h3>
+
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <span class="stat-icon" aria-hidden="true">📍</span>
+                  <div>
+                    <p id="stat-origin" class="stat-value">-</p>
+                    <span class="stat-label">Origin</span>
+                  </div>
+                </div>
+
+                <div class="stat-item">
+                  <span class="stat-icon" aria-hidden="true">⏱️</span>
+                  <div>
+                    <p id="stat-lifespan" class="stat-value">-</p>
+                    <span class="stat-label">Lifespan</span>
+                  </div>
+                </div>
+
+                <div class="stat-item">
+                  <span class="stat-icon" aria-hidden="true">📏</span>
+                  <div>
+                    <p id="stat-height" class="stat-value">-</p>
+                    <span class="stat-label">Height</span>
+                  </div>
+                </div>
+
+                <div class="stat-item">
+                  <span class="stat-icon" aria-hidden="true">⚖️</span>
+                  <div>
+                    <p id="stat-weight" class="stat-value">-</p>
+                    <span class="stat-label">Weight</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Temperament -->
+            <div class="info-card card">
+              <h3>Temperament</h3>
+              <div id="stat-temperament" class="trait-chips"></div>
+            </div>
           </div>
 
-          <div class="stat-item">
-            <h2>Temperament</h2>
-            <p id="stat-temp">-</p>
+          <!-- Bottom row -->
+          <div class="bottom-row">
+
+            <div class="info-card card">
+              <h3>Description</h3>
+              <p id="stat-description">-</p>
+            </div>
+
+            <div class="info-card card">
+              <div class="card-header-row">
+                <h3>History &amp; Group</h3>
+                <span class="group-badge">Group: <span id="stat-group">-</span></span>
+              </div>
+              <p id="stat-history">-</p>
+            </div>
           </div>
-        </div>
+        </section>
       </main>
     </div>
-    
-    <footer>
-      <p>&copy; 2026 Frank's Dog Explorer. Open API Project CTD.</p>
+
+
+    <!-- BROWSE PAGE -->
+    <div id="browse-page" hidden>
+      <main class="page-content">
+        <h2 class="page-heading">All Dog Breeds</h2>
+        <div id="breeds-grid" class="breeds-grid"></div>
+      </main>
+    </div>
+
+
+    <!-- FOOTER -->
+    <footer id="footer">
+      <p>&copy; 2026 BreedDex &mdash; Frank Angel | CTD Open API Project</p>
     </footer>
 
     <script src="js/index.js"></script>
